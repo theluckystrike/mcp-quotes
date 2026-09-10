@@ -1,13 +1,45 @@
 # mcp-quotes
 
+<!-- mirror-seo:start -->
+
+**MCP server for price quotes, estimates and proposals.** Priced, VAT-correct quotes from chat, and the yes turns into an invoice.
+
+Works with Claude Desktop, Claude Code, Cursor and any Model Context Protocol client. Runs on your own machine, or hosted with no install.
+
+## Install
+
+**Hosted, nothing to install.** Point an MCP client at `https://mcp.zovo.one/mcp/quotes` over streamable-http and send `Authorization: Bearer <token>`, where the token is a Pro key or a free anonymous one from <https://mcp.zovo.one/mcp/token>.
+
+**Claude Desktop, one click.** Download `quotes.mcpb` from the [latest release](https://github.com/theluckystrike/mcp-servers/releases/latest) and double-click it.
+
+**From source.** The mirror is self-contained: every `@theluckystrike/*` dependency is vendored, so a fresh clone builds with no extra setup.
+
+```sh
+git clone https://github.com/theluckystrike/mcp-quotes.git
+cd mcp-quotes
+npm install && npm run build
+```
+
+Then point your client at the built entry point:
+
+```json
+{
+  "mcpServers": {
+    "quotes": {
+      "command": "node",
+      "args": ["/absolute/path/to/mcp-quotes/dist/index.js"]
+    }
+  }
+}
+```
+
+> `@theluckystrike/mcp-quotes` is **not published on npm yet**, so an `npx -y @theluckystrike/mcp-quotes` command will fail. The three paths above are the working ones and each is exercised by CI.
+
 ![quotes demo](https://raw.githubusercontent.com/theluckystrike/mcp-servers/main/assets/demo-quotes.gif)
-
-**One-click install:** download `quotes.mcpb` from the [latest release](https://github.com/theluckystrike/mcp-servers/releases/latest) and double-click it in Claude Desktop.
-
-**Hosted endpoint (no install):** `https://mcp.zovo.one/mcp/quotes` (streamable-http; send `Authorization: Bearer <Pro key or anonymous token from https://mcp.zovo.one/mcp/token>`).
 
 Read-only mirror of [mcp-servers/servers/quotes](https://github.com/theluckystrike/mcp-servers/tree/main/servers/quotes). See [MIRROR.md](MIRROR.md).
 
+<!-- mirror-seo:end -->
 
 Say "quote Acme for 12 hours at 90 EUR plus a 300 EUR setup, 23% VAT, good for 14 days" and get a numbered quote you can send today: the line table with VAT per rate, the total in integer minor units, a validity date computed in your own timezone, a plain-text version to paste straight into an email and, on Pro, the same A4 PDF layout your invoices use. When the client says yes, `quote_accept` turns it into a real invoice in the [mcp-invoice](../invoice) store, under the same client list and the same number series, with the numbers copied from the quote rather than recomputed. Everything is stored in plain JSON files on your own machine; nothing is uploaded anywhere.
 
